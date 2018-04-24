@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+if [ "$1" == "bash" ];then
+    exec /bin/bash
+fi
+
 # installing mysql credentials if file does not exist
 mysql_config="/root/.my.cnf"
 if [ ! -f "$mysql_config" ]; then
@@ -10,9 +14,5 @@ if [ ! -f "$mysql_config" ]; then
     echo "port=$MYSQL_PORT" >> /root/.my.cnf
 fi
 
-# installing crontab from env
-echo "$CRON" | crontab -
-crontab -l
+exec go-cron -s "$SCHEDULE" -- /bin/bash -c "/bin/backup full"
 
-# run cron in foreground
-cron -f
