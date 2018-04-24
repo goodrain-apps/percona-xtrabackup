@@ -38,13 +38,22 @@ function status(){
 }
 
 # ============= Main =============
-if [ "$1" == "full" ];then
-   hotbackup "full" "${fullPath}/${bakdate}.log" "none" "$fullPath/$bakdate"
-   status $? >> ${fullPath}/dd.log
-elif [ "$1" == "incremental" ];then
-  if [ "$2" == "first" ];then
-     hotbackup "incremental" "${incrPath}/${bakdate}_${bakhour}.log" "$incrPath/${bakdate}_${bakhour}" "$fullPath/$bakdate"
-  else
-     hotbackup "incremental" "${incrPath}/${bakdate}_${bakhour}.log" "$incrPath/${bakdate}_${bakhour}" "$incrPath/${oneHourAgo}"
+function main(){
+  if [ "$1" == "full" ];then
+    hotbackup "full" "${fullPath}/${bakdate}.log" "none" "$fullPath/$bakdate"
+    status $? >> ${fullPath}/dd.log
+  elif [ "$1" == "incremental" ];then
+    if [ "$2" == "first" ];then
+      hotbackup "incremental" "${incrPath}/${bakdate}_${bakhour}.log" "$incrPath/${bakdate}_${bakhour}" "$fullPath/$bakdate"
+    else
+      hotbackup "incremental" "${incrPath}/${bakdate}_${bakhour}.log" "$incrPath/${bakdate}_${bakhour}" "$incrPath/${oneHourAgo}"
+    fi
   fi
+}
+
+# ============= Run ==================
+if [ ! -z "$BACKUP_ENABLE" -a "$BACKUP_ENABLE" = "true" ];then
+  main
+else
+  echo ""
 fi

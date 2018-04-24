@@ -1,1 +1,15 @@
-# ADD-ONE MySQL backup
+# 云帮mysql数据库备份插件
+
+```
+# 支持变量
+BACKUP_ENABLE 是否开启备份
+BACKUP_TYPE 备份类型(full,incremental),目前支持full
+SCHEDULE 定时任务时间，支持格式("* * * * *", "@every 150s")
+DINGTOKEN 备份通知
+```
+
+# Todo
+
+- 支持增量备份
+- 支持恢复备份
+- 支持同步备份到远端
