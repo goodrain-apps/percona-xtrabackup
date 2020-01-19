@@ -30,10 +30,12 @@ function hotbackup_inc(){
   if [ "$i" = 0 ]; then
     main "full" 
   elif [ "$i" = 1 ]; then
-    bakpath=`ls $fullPath | sort -r | head -n 1`
+    basefile=`ls $fullPath | sort -r | head -n 1`
+    bakpath="$fullPath/$basefile"
     $BakBin --target-dir=$incrpath --incremental-basedir $bakpath > $logfile 2>&1
   else
-    bakpath=`ls $incrPath | sort -r | head -n 1`
+    basefile=`ls $incrPath | sort -r | head -n 1`
+    bakpath="$incrPath/$basefile"
     $BakBin --target-dir=$incrpath --incremental-basedir $bakpath > $logfile 2>&1
   fi
 }
