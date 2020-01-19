@@ -5,6 +5,10 @@ RUN curl -SL https://github.com/odise/go-cron/releases/download/v0.0.7/go-cron-l
   && chmod u+x /usr/local/bin/go-cron
 
 ENV VERSION 201804241051
+ENV BACKUP_ENABLE ture
+ENV BACKUP_TYPE full
+ENV SCHEDULE  "0 0 3 * *"
+ENV BACKUP_CYCLE 7
 
 ADD entrypoint.sh /bin/entrypoint
 ADD backup.sh /bin/backup

@@ -14,4 +14,6 @@ if [ ! -f "$mysql_config" ]; then
     echo "port=$MYSQL_PORT" >> /root/.my.cnf
 fi
 
-exec go-cron -s "${SCHEDULE:-@every 120s}" -- /bin/bash -c "/bin/backup full"
+echo 0 > /tmp/backupnum
+
+exec go-cron -s "${SCHEDULE:-@every 120s}" -- /bin/bash -c "/bin/backup $BACKUP_TYPE"
