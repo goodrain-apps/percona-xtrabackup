@@ -1,8 +1,7 @@
 FROM rainbond/addones:xtrabackup_base
 
-RUN curl -SL https://github.com/odise/go-cron/releases/download/v0.0.7/go-cron-linux.gz \
-    | zcat > /usr/local/bin/go-cron \
-  && chmod u+x /usr/local/bin/go-cron
+COPY go-cron-linux /usr/local/bin/go-cron
+RUN chmod u+x /usr/local/bin/go-cron
 
 ENV VERSION 201804241051
 ENV BACKUP_ENABLE ture
