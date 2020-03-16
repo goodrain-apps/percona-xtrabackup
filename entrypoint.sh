@@ -14,6 +14,10 @@ if [ ! -f "$mysql_config" ]; then
     echo "port=$MYSQL_PORT" >> /root/.my.cnf
 fi
 
-echo 0 > /tmp/backupnum
+if [ ! -z "$COPY_BACK_ENABLE" -a "$COPY_BACK_ENABLE" == "true" ];then
+    /bin/bash -c "/bin/copy-back"
+else
+    echo 0 > /tmp/backupnum
 
-exec go-cron -s "${SCHEDULE:-@every 120s}" -- /bin/bash -c "/bin/backup $BACKUP_TYPE"
+    exec go-cron -s "${SCHEDULE:-@every 120s}" -- /bin/bash -c "/bin/backup $BACKUP_TYPE"
+fi

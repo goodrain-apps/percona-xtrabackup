@@ -4,13 +4,15 @@ COPY go-cron-linux /usr/local/bin/go-cron
 RUN chmod u+x /usr/local/bin/go-cron
 
 ENV VERSION 201804241051
-ENV BACKUP_ENABLE ture
+ENV BACKUP_ENABLE true
 ENV BACKUP_TYPE full
 ENV SCHEDULE  "0 0 3 * *"
 ENV BACKUP_CYCLE 7
+ENV COPY_BACK_ENABLE flase
 
 ADD entrypoint.sh /bin/entrypoint
 ADD backup.sh /bin/backup
+ADD copy-back /bin/copy-back
 
 RUN chmod 755 /bin/entrypoint /bin/backup
 

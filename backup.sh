@@ -67,7 +67,7 @@ function main(){
 }
 
 # ============= Run ==================
-if true;then
+if [ ! -z "$BACKUP_ENABLE" -a "$BACKUP_ENABLE" = "true" ];then
   main $1 $backupNum && ((backupNum+=1))
 else
   echo ""
