@@ -1,4 +1,4 @@
-FROM rainbond/addones:xtrabackup_base
+FROM linux2573/addones:xtrabackup_base
 
 COPY go-cron-linux /usr/local/bin/go-cron
 RUN chmod u+x /usr/local/bin/go-cron
