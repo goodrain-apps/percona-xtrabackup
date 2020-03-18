@@ -8,12 +8,12 @@ ENV BACKUP_ENABLE true
 ENV BACKUP_TYPE full
 ENV SCHEDULE  "0 0 3 * *"
 ENV BACKUP_CYCLE 7
-ENV COPY_BACK_ENABLE flase
+ENV RESTORE_ENABLE flase
 
 ADD entrypoint.sh /bin/entrypoint
 ADD backup.sh /bin/backup
-ADD copy-back /bin/copy-back
+ADD restore.sh /bin/restore
 
-RUN chmod 755 /bin/entrypoint /bin/backup
+RUN chmod 755 /bin/entrypoint /bin/backup /bin/restore
 
 ENTRYPOINT ["entrypoint"]

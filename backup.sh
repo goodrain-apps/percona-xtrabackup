@@ -2,8 +2,6 @@
 fullPath="/data/backup/full"
 incrPath="/data/backup/incremental"
 bakdate=`date +'%F-%H-%M'`
-bakhour=`date +'%H'`
-oneHourAgo=`date -d '1 hours ago' +'%F_%H'`
 backupNum=`cat /tmp/backupnum`
 BakBin="/usr/bin/xtrabackup \
 --backup \
@@ -59,8 +57,8 @@ function main(){
     hotbackup_full "${fullPath}/${bakdate}.log" "$fullPath/$bakdate"
     status $? >> ${fullPath}/dd.log
   elif [ "$1" == "incremental" ];then
-    hotbackup_inc "${incrPath}/${bakdate}_${bakhour}.log" "$incrPath/$bakdate" "$BACKUP_CYCLE" "$2"
-#    status $? >> ${incrPath}/dd.log
+    hotbackup_inc "${incrPath}/${bakdate}.log" "$incrPath/$bakdate" "$BACKUP_CYCLE" "$2"
+    status $? >> ${incrPath}/dd.log
   else
     echo ‘The variable BACKUP_TYPE can be set to "full or incremental"’
   fi

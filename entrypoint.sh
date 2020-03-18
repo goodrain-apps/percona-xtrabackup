@@ -14,8 +14,8 @@ if [ ! -f "$mysql_config" ]; then
     echo "port=$MYSQL_PORT" >> /root/.my.cnf
 fi
 
-if [ ! -z "$COPY_BACK_ENABLE" -a "$COPY_BACK_ENABLE" == "true" ];then
-    /bin/bash -c "/bin/copy-back"
+if [ ! -z "$RESTORE_ENABLE" -a "$RESTORE_ENABLE" == "true" ];then
+    /bin/bash -c "/bin/restore"
 else
     echo 0 > /tmp/backupnum
 
