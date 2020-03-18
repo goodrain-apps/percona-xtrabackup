@@ -37,6 +37,7 @@ function restore_inc(){
 
 function main(){
     file_list
+    
     FILE_NUM=`cat /tmp/restore_back.txt | wc -l`
 
     if [ "$FILE_NUM" -eq 0 ];then 
@@ -49,4 +50,6 @@ function main(){
         restore_inc
     fi
 }
+
+main
 
