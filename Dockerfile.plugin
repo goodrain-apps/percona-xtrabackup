@@ -11,8 +11,7 @@ ENV BACKUP_CYCLE 7
 
 ADD entrypoint.sh /bin/entrypoint
 ADD backup.sh /bin/backup
-ADD restore.sh /bin/restore
 
-RUN chmod 755 /bin/entrypoint /bin/backup /bin/restore
+RUN chmod 755 /bin/entrypoint /bin/backup 
 
 ENTRYPOINT ["entrypoint"]
