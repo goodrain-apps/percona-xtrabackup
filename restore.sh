@@ -13,43 +13,49 @@ ResBin="/usr/bin/innobackupex \
 fullfile=`ls $fullPath | grep -v log | sort -r | head -n 1`
 
 function file_list(){
-    incfile=`ls $fullPath | grep -v log | sort -r"
-    echo $fullpath > /tmp/all_back.txt
-    echo $incfile >> /tmp/all_back.txt
-    cat /tmp/all_back.txt | tr ' ' '\n' | sort -r | grep -A $BACKUP_CYCLE $fullpath > /tmp/restore_back.txt
+    echo $1 > /tmp/all_back.txt
+    ls $incrPath | grep -v log | sort -r >> /tmp/all_back.txt
+    cat /tmp/all_back.txt | tr ' ' '\n' | sort | grep -A $BACKUP_CYCLE $1 > /tmp/restore_back.txt
 }
 
 function restore_full(){
-    $respath=$1
-    $PreBin $respath
-    $ResBin $respath
+    $PreBin $1
+    $ResBin $1
 }
 
 function restore_inc(){
-    resfullpath=`sed -r '1p' /tmp/restore_back.txt`
-    $IncPreBin $resfullpath
-    sed -r '1d;$d' /tmp/restore_back.txt | while read resincfull ;do
-        $IncPreBin $resfullpath --incremental-dir=$resincfull
-    done
-    /usr/bin/innobackupex --apply-log $resfullpath --incremental-dir=`sed -r '$p' /tmp/restore_back.txt`
-    $ResBin $resfullpath
+    resfullpath=`sed -nr '1p' /tmp/restore_back.txt`
+    $IncPreBin $fullPath/$resfullpath
+    if [ "$1" -gt 2 ];then
+        sed -r '1d;$d' /tmp/restore_back.txt | while read resincfull ;do
+            $IncPreBin $fullPath/$resfullpath --incremental-dir=$incrPath/$resincfull
+        done
+    fi
+    /usr/bin/innobackupex --apply-log $fullPath/$resfullpath --incremental-dir=$incrPath/`sed -nr '$p' /tmp/restore_back.txt`
+    $ResBin $fullPath/$resfullpath
 }
 
 function main(){
-    file_list
+    file_list $fullfile
     
     FILE_NUM=`cat /tmp/restore_back.txt | wc -l`
 
     if [ "$FILE_NUM" -eq 0 ];then 
-        echo "缺少备份文件，请检查/data/back"
-    elif [ "$FILE_NUM" -gt "$BACKUP_CYCLE"];then
-        echo "备份文件检测出错，请检查/data/back"
+        status="缺少备份文件，请检查/data/back"
+    elif [ "$FILE_NUM" -gt "$BACKUP_CYCLE" ];then
+        status="备份文件检测出错，请检查/data/back"
     elif [ "$FILE_NUM" -eq 1 ];then
-        restore_full $fullPath/$fullfile
+        restore_full $fullPath/$fullfile $FILE_NUM && status="成功恢复数据" || status="恢复失败，请检查备份文件"
     else 
-        restore_inc
+        restore_inc $FILE_NUM && status="成功恢复数据" || status="恢复失败，请检查备份文件"
     fi
+
+    while true;do
+        echo $status
+        sleep 100
+    done
 }
 
+makdir /data/data 
 main
 
