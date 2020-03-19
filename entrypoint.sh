@@ -14,10 +14,6 @@ if [ ! -f "$mysql_config" ]; then
     echo "port=$MYSQL_PORT" >> /root/.my.cnf
 fi
 
-if [ ! -z "$RESTORE_ENABLE" -a "$RESTORE_ENABLE" == "true" ];then
-    /bin/bash -c "/bin/restore"
-else
-    echo 0 > /tmp/backupnum
+echo 0 > /tmp/backupnum
 
-    exec go-cron -s "${SCHEDULE:-@every 120s}" -- /bin/bash -c "/bin/backup $BACKUP_TYPE"
-fi
+exec go-cron -s "${SCHEDULE:-@every 120s}" -- /bin/bash -c "/bin/backup $BACKUP_TYPE"
