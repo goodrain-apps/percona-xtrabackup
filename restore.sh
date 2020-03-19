@@ -56,7 +56,6 @@ function main(){
 if [ -z "$BACKUP_CYCLE" -r "$BACKUP_CYCLE" = "0" ];then
     echo "请输入正确的BACKUP_CYCLE"
 else
-    makdir /data/data 
     main
 fi
 
