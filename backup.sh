@@ -51,8 +51,14 @@ function status(){
   echo "$status_info -- $DINGTOKEN"
 }
 
+function clean_timeout_file(){
+  find ${fullPath}/ -mtime +$1 -name 2* -exec rm -rf {} \;
+  find ${incrPath}/ -mtime +$1 -name 2* -exec rm -rf {} \;
+}
+
 # ============= Main =============
 function main(){
+  echo `ls ${fullPath}/ | grep -v log | wc -l` || clean_timeout_file $CLEAN_TIME
   if [ "$1" == "full" ];then
     hotbackup_full "${fullPath}/${bakdate}.log" "$fullPath/$bakdate"
     status $? >> ${fullPath}/dd.log
