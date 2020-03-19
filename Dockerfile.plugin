@@ -1,0 +1,13 @@
+FROM linux2573/addones:xtrabackup_base
+
+COPY go-cron-linux /usr/local/bin/go-cron
+RUN chmod u+x /usr/local/bin/go-cron
+
+ENV BACKUP_CYCLE 7
+
+
+ADD restore.sh /bin/restore
+
+RUN chmod 755 /bin/restore
+
+ENTRYPOINT ["restore"]
