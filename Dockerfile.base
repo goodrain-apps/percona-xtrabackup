@@ -4,12 +4,13 @@ MAINTAINER ysicing
 
 ENV TZ=Asia/Shanghai
 
-ADD percona-release.list /etc/apt/sources.list.d/percona-release.list 
+ADD percona-release.list /etc/apt/sources.list.d/percona-release.list
+ADD sources.list /etc/apt/sources.list
 
 COPY ./gpg/ /etc/apt/trusted.gpg.d/
 
 RUN set -x \
-    && apt update && apt install -y --no-install-recommends vim curl tree procps ca-certificates percona-xtrabackup-24 && rm -rf /var/lib/apt/lists/* 
+    && apt update && apt install -y --no-install-recommends vim curl tree procps ca-certificates percona-xtrabackup-24 && rm -rf /var/lib/apt/lists/*
 
 ADD base.sh /entrypoint.sh
 
