@@ -25,7 +25,6 @@ function hotbackup_inc(){
   backupnum=$4
   let j=backupcycle+1
   let i=backupnum%j
-  echo $i >> /opt/i.txt
   if [ "$i" = 0 ]; then
     main "full"
   elif [ "$i" = 1 ]; then
