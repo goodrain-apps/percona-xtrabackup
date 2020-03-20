@@ -1,10 +1,13 @@
-FROM spanda/percona-xtrabackup:base
+FROM linux2573/addones:xtrabackup_base
 
-RUN apt update && apt install -y --no-install-recommends cron  && rm -rf /var/lib/apt/lists/* 
+COPY go-cron-linux /usr/local/bin/go-cron
+RUN chmod u+x /usr/local/bin/go-cron
 
-ADD entrypoint.sh /bin/entrypoint
-ADD backup.sh /bin/backup
+ENV BACKUP_CYCLE 7
 
-RUN chmod 755 /bin/entrypoint /bin/backup
 
-ENTRYPOINT ["entrypoint"]
+ADD restore.sh /bin/restore
+
+RUN chmod 755 /bin/restore
+
+ENTRYPOINT ["restore"]
