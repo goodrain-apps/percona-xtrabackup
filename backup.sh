@@ -25,7 +25,6 @@ function hotbackup_inc(){
   backupnum=$4
   let j=backupcycle+1
   let i=backupnum%j
-  echo $i >> /opt/i.txt
   if [ "$i" = 0 ]; then
     main "full"
   elif [ "$i" = 1 ]; then
@@ -58,7 +57,11 @@ function clean_timeout_file(){
 
 # ============= Main =============
 function main(){
-  echo `ls ${fullPath}/ | grep -v log | wc -l` || clean_timeout_file $CLEAN_TIME
+  BackFile=`ls ${fullPath}/ | grep -v log | wc -l`
+  if [ "$BackFile" -ge 2 ];then
+    clean_timeout_file $CLEAN_TIME
+  fi
+  
   if [ "$1" == "full" ];then
     hotbackup_full "${fullPath}/${bakdate}.log" "$fullPath/$bakdate"
     status $? >> ${fullPath}/dd.log
