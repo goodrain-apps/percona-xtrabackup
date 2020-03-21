@@ -53,7 +53,7 @@ function main(){
     echo $status
 }
 
-if [ -z "$BACKUP_CYCLE" -r "$BACKUP_CYCLE" = "0" ];then
+if [ -z "$BACKUP_CYCLE" -o "$BACKUP_CYCLE" = "0" ];then
     echo "请输入正确的BACKUP_CYCLE"
 else
     main
