@@ -8,6 +8,7 @@ ENV BACKUP_ENABLE true
 ENV BACKUP_TYPE full
 ENV SCHEDULE  "0 0 3 * *"
 ENV BACKUP_CYCLE 7
+ENV CLEAN_TIME 30
 
 ADD entrypoint.sh /bin/entrypoint
 ADD backup.sh /bin/backup
